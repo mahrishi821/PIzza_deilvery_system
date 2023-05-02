@@ -1,2 +1,2 @@
-# PIzza_deilvery_system
+# PIzza_delivery_system
 Python for ml project
