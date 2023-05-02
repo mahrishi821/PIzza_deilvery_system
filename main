@@ -1,0 +1,264 @@
+import tkinter as tk
+from tkinter import messagebox
+
+orders = [] 
+status = {} 
+sizes = {"Small": 99, "Medium": 150, "Large": 220} 
+
+def customer_window():
+
+    customer = tk.Toplevel()
+    customer.title("Customer Portal")
+    customer.geometry("300x300")
+
+    welcome_label = tk.Label(customer, text="*****Welcome to Pizza Hut!*****")
+    welcome_label.pack()
+
+
+    book_button = tk.Button(customer, text="Book a Pizza", command=lambda: (book_pizza(),customer.destroy()))
+    book_button.pack()
+
+    cancel_button = tk.Button(customer, text="Cancel an Order", command=lambda: (cancel_order(),customer.destroy()))
+    cancel_button.pack()
+
+    track_button = tk.Button(customer, text="Track an Order", command=lambda: (track_order(),customer.destroy()))
+    track_button.pack()
+
+def vendor_window():
+
+    vendor = tk.Toplevel()
+    vendor.title("Vendor Portal")
+    vendor.geometry("300x300")
+
+    welcome_label = tk.Label(vendor, text="Welcome to Pizza Hut!")
+    welcome_label.pack()
+
+    see_button = tk.Button(vendor, text="See Placed Orders", command=lambda: (see_orders(),vendor.destroy()))
+    see_button.pack()
+
+    accept_reject_button = tk.Button(vendor, text="Accept or Reject an Order", command=lambda: (accept_reject_order(),vendor.destroy()))
+    accept_reject_button.pack()
+
+    change_status_button = tk.Button(vendor, text="Change Tracking Status", command=lambda: (change_status(),vendor.destroy()))
+    change_status_button.pack()
+
+def book_pizza():
+
+    book = tk.Toplevel()
+    book.title("Book a Pizza")
+    book.geometry("300x300")
+
+    instruction_label = tk.Label(book, text="Please select the size and quantity of your pizza.")
+    instruction_label.pack()
+
+    size_var = tk.StringVar()
+
+    small_radio = tk.Radiobutton(book, text="Small (Rs. 99)", variable=size_var, value="Small")
+    small_radio.pack()
+
+    medium_radio = tk.Radiobutton(book, text="Medium (Rs. 150)", variable=size_var, value="Medium")
+    medium_radio.pack()
+
+    large_radio = tk.Radiobutton(book, text="Large (Rs. 220)", variable=size_var, value="Large")
+    large_radio.pack()
+
+    quantity_label = tk.Label(book, text="Quantity:")
+
+    quantity_label.pack()
+
+    quantity_entry = tk.Entry(book)
+    quantity_entry.pack()
+
+    confirm_button = tk.Button(book, text="Confirm Order", command=lambda: (confirm_order(size_var.get(), quantity_entry.get()),book.destroy()))
+    confirm_button.pack()
+
+def confirm_order(size, quantity):
+
+    if size in sizes and quantity.isdigit() and int(quantity) > 0:
+
+        price = sizes[size] * int(quantity)
+
+        order_id = len(orders) + 1
+
+        orders.append((order_id, size, quantity, price))
+
+        status[order_id] = "Pending"
+
+        messagebox.showinfo("Order Confirmed", f"Your order of {quantity} {size} pizza(s) has been placed.\nYour total price is Rs. {price}.\nYour order ID is {order_id}.\nPleasekeep track of your order status.")
+    else:
+
+        messagebox.showerror("Invalid Input", "Please select a valid size and quantity.")
+
+def cancel_order():
+
+    cancel = tk.Toplevel()
+    cancel.title("Cancel an Order")
+    cancel.geometry("300x300")
+
+    instruction_label = tk.Label(cancel, text="Please enter your order ID to cancel your order.")
+    instruction_label.pack()
+
+    order_id_entry = tk.Entry(cancel)
+    order_id_entry.pack()
+
+    confirm_button = tk.Button(cancel, text="Confirm Cancellation", command=lambda: (confirm_cancellation(order_id_entry.get()),cancel.destroy()))
+    confirm_button.pack()
+
+def confirm_cancellation(order_id):
+
+    if order_id.isdigit() and int(order_id) in status:
+
+        if status[int(order_id)] not in ["Delivered", "Cancelled"]:
+
+            status[int(order_id)] = "Cancelled"
+
+            messagebox.showinfo("Order Cancelled", f"Your order with ID {order_id} has been cancelled.")
+        else:
+
+            messagebox.showerror("Invalid Order", f"Your order with ID {order_id} cannot be cancelled.")
+    else:
+
+        messagebox.showerror("Invalid Input", "Please enter a valid order ID.")
+
+def track_order():
+
+    track = tk.Toplevel()
+    track.title("Track an Order")
+    track.geometry("300x300")
+
+    instruction_label = tk.Label(track, text="Please enter your order ID to track your order.")
+    instruction_label.pack()
+
+    order_id_entry = tk.Entry(track)
+    order_id_entry.pack()
+
+    show_button = tk.Button(track, text="Show Status", command=lambda: (show_status(order_id_entry.get()),track.destroy()))
+    show_button.pack()
+
+def show_status(order_id):
+
+    if order_id.isdigit() and int(order_id) in status:
+
+        order_status = status[int(order_id)]
+
+        messagebox.showinfo("Order Status", f"Your order with ID {order_id} is {order_status}.")
+    else:
+
+        messagebox.showerror("Invalid Input", "Please enter a valid order ID.")
+
+def see_orders():
+
+    see = tk.Toplevel()
+    see.title("See Placed Orders")
+    see.geometry("300x300")
+
+    orders_label = tk.Label(see, text="Here are the placed orders:")
+    orders_label.pack()
+
+    orders_list = tk.Listbox(see)
+    orders_list.pack()
+
+    for order in orders:
+        orders_list.insert(tk.END, f"Order ID: {order[0]}, Size: {order[1]}, Quantity: {order[2]}, Price: Rs. {order[3]}")
+
+def accept_reject_order():
+
+    accept_reject = tk.Toplevel()
+    accept_reject.title("Accept or Reject an Order")
+    accept_reject.geometry("300x300")
+
+    instruction_label = tk.Label(accept_reject, text="Please enter the order ID and select either Accept or Reject.")
+    instruction_label.pack()
+
+    order_id_entry = tk.Entry(accept_reject)
+    order_id_entry.pack()
+
+    option_var = tk.StringVar()
+
+    accept_radio = tk.Radiobutton(accept_reject, text="Accept", variable=option_var, value="Accepted")
+    accept_radio.pack()
+
+    reject_radio = tk.Radiobutton(accept_reject, text="Reject", variable=option_var, value="Rejected")
+    reject_radio.pack()
+
+    confirm_button = tk.Button(accept_reject, text="Confirm", command=lambda: (confirm_option(order_id_entry.get(), option_var.get()),accept_reject()))
+    confirm_button.pack()
+
+def confirm_option(order_id, option):
+
+    if order_id.isdigit() and int(order_id) in status and option in ["Accepted", "Rejected"]:
+
+        if status[int(order_id)] == "Pending":
+
+            status[int(order_id)] = option
+
+            messagebox.showinfo("Order Updated", f"Your order with ID {order_id} has been {option}.")
+        else:
+
+            messagebox.showerror("Invalid Order", f"Your order with ID {order_id} cannot be {option}.")
+    else:
+
+        messagebox.showerror("Invalid Input", "Please enter a valid order ID and select either Accept or Reject.")
+
+def change_status():
+
+    change = tk.Toplevel()
+    change.title("Change Tracking Status")
+    change.geometry("300x300")
+
+    instruction_label = tk.Label(change, text="Please enter the order ID and select the new tracking status.")
+    instruction_label.pack()
+
+    order_id_entry = tk.Entry(change)
+    order_id_entry.pack()
+
+    status_var = tk.StringVar()
+
+    confirmed_radio = tk.Radiobutton(change, text="Order Confirmed", variable=status_var, value="Order Confirmed")
+    confirmed_radio.pack()
+
+    preparation_radio = tk.Radiobutton(change, text="Under Preparation", variable=status_var, value="Under Preparation")
+    preparation_radio.pack()
+
+    delivery_radio = tk.Radiobutton(change, text="Out for Delivery", variable=status_var, value="Out for Delivery")
+    delivery_radio.pack()
+
+    delivered_radio = tk.Radiobutton(change, text="Delivered", variable=status_var, value="Delivered")
+    delivered_radio.pack()
+
+    confirm_button = tk.Button(change, text="Confirm Status", command=lambda: (confirm_status(order_id_entry.get(), status_var.get()),change.destroy()))
+    confirm_button.pack()
+
+def confirm_status(order_id, new_status):
+
+    if order_id.isdigit() and int(order_id) in status and new_status in ["Order Confirmed", "Under Preparation", "Out for Delivery", "Delivered"]:
+
+        if status[int(order_id)] not in ["Cancelled", "Delivered"]:
+
+            status[int(order_id)] = new_status
+
+            messagebox.showinfo("Order Updated", f"Your order with ID {order_id} is now {new_status}.")
+        else:
+
+            messagebox.showerror("Invalid Order", f"Your order with ID {order_id} cannot be updated.")
+    else:
+
+        messagebox.showerror("Invalid Input", "Please enter a valid order ID and select a valid tracking status.")
+
+root = tk.Tk()
+root.title("Pizza Ordering System")
+root.geometry("300x300")
+root.config(bg="grey")
+
+welcome_label = tk.Label(root, text="*****Welcome to Pizza Hut!****",font=('@Microsoft JhengHei UI',14))
+welcome_label.pack()
+
+customer_button = tk.Button(root, text="Customer Portal", command=customer_window)
+customer_button.pack()
+customer_button.place(x=10,y=80)
+
+vendor_button = tk.Button(root, text="Vendor Portal", command=vendor_window)
+vendor_button.pack()
+vendor_button.place(x=105,y=120)
+
+root.mainloop()
