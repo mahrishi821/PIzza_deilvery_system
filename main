@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox
+from PIL import Image,ImageTk
 
 orders = [] 
 status = {} 
@@ -9,68 +10,86 @@ def customer_window():
 
     customer = tk.Toplevel()
     customer.title("Customer Portal")
-    customer.geometry("300x300")
+    customer.geometry("500x500")
+    customer.config(bg="grey")
+   
 
-    welcome_label = tk.Label(customer, text="*****Welcome to Pizza Hut!*****")
+
+    welcome_label = tk.Label(customer, text="*****Welcome to Pizza Hut!*****",font=('@Microsoft JhengHei UI',16))
     welcome_label.pack()
+    welcome_label.place(x=110,y=50)
 
 
     book_button = tk.Button(customer, text="Book a Pizza", command=lambda: (book_pizza(),customer.destroy()))
     book_button.pack()
+    book_button.place(x=150,y=150,height=50,width=220)
 
     cancel_button = tk.Button(customer, text="Cancel an Order", command=lambda: (cancel_order(),customer.destroy()))
     cancel_button.pack()
+    cancel_button.place(x=150,y=240,height=50,width=220)
 
     track_button = tk.Button(customer, text="Track an Order", command=lambda: (track_order(),customer.destroy()))
     track_button.pack()
+    track_button.place(x=150,y=330,height=50,width=220)
 
 def vendor_window():
 
     vendor = tk.Toplevel()
     vendor.title("Vendor Portal")
-    vendor.geometry("300x300")
+    vendor.geometry("500x500")
+    vendor.config(bg="grey")
 
-    welcome_label = tk.Label(vendor, text="Welcome to Pizza Hut!")
+    welcome_label = tk.Label(vendor, text="*****Welcome to Pizza Hut!*****",font=('@Microsoft JhengHei UI',20))
     welcome_label.pack()
+    welcome_label.place(x=50,y=50)
 
-    see_button = tk.Button(vendor, text="See Placed Orders", command=lambda: (see_orders(),vendor.destroy()))
+    see_button = tk.Button(vendor, text="See Placed Orders",font=('@Microsoft JhengHei UI',16), command=lambda: (see_orders(),vendor.destroy()))
     see_button.pack()
+    see_button.place(x=130,y=150,height=50,width=280)
 
-    accept_reject_button = tk.Button(vendor, text="Accept or Reject an Order", command=lambda: (accept_reject_order(),vendor.destroy()))
+    accept_reject_button = tk.Button(vendor, text="Accept or Reject an Order",font=('@Microsoft JhengHei UI',16), command=lambda: (accept_reject_order(),vendor.destroy()))
     accept_reject_button.pack()
+    accept_reject_button.place(x=130,y=240,height=50,width=280)
 
-    change_status_button = tk.Button(vendor, text="Change Tracking Status", command=lambda: (change_status(),vendor.destroy()))
+    change_status_button = tk.Button(vendor, text="Change Tracking Status", font=('@Microsoft JhengHei UI',16),command=lambda: (change_status(),vendor.destroy()))
     change_status_button.pack()
+    change_status_button.place(x=130,y=330,height=50,width=280)
 
 def book_pizza():
 
     book = tk.Toplevel()
-    book.title("Book a Pizza")
-    book.geometry("300x300")
-
-    instruction_label = tk.Label(book, text="Please select the size and quantity of your pizza.")
+    book.title("****Book a Pizza****")
+    book.geometry("500x500")
+    
+    instruction_label = tk.Label(book, text="Please select the size and quantity of your pizza.",font=('@Microsoft JhengHei UI',16))
     instruction_label.pack()
+    instruction_label.place(x=20,y=60)
 
     size_var = tk.StringVar()
 
-    small_radio = tk.Radiobutton(book, text="Small (Rs. 99)", variable=size_var, value="Small")
+    small_radio = tk.Radiobutton(book, text="Small (Rs. 99)", variable=size_var, value="Small",font=('@Microsoft JhengHei UI',16))
     small_radio.pack()
-
-    medium_radio = tk.Radiobutton(book, text="Medium (Rs. 150)", variable=size_var, value="Medium")
+    small_radio.place(x=180,y=140)
+    
+    medium_radio = tk.Radiobutton(book, text="Medium (Rs. 150)", variable=size_var, value="Medium",font=('@Microsoft JhengHei UI',16))
     medium_radio.pack()
+    medium_radio.place(x=180,y=190)
 
-    large_radio = tk.Radiobutton(book, text="Large (Rs. 220)", variable=size_var, value="Large")
+    large_radio = tk.Radiobutton(book, text="Large (Rs. 220)", variable=size_var, value="Large",font=('@Microsoft JhengHei UI',16))
     large_radio.pack()
+    large_radio.place(x=180,y=240)
 
-    quantity_label = tk.Label(book, text="Quantity:")
-
+    quantity_label = tk.Label(book, text="Quantity:",font=('@Microsoft JhengHei UI',16))
     quantity_label.pack()
+    quantity_label.place(x=50,y=300)
 
     quantity_entry = tk.Entry(book)
     quantity_entry.pack()
+    quantity_entry.place(x=180,y=300,height=40,width=200)
 
     confirm_button = tk.Button(book, text="Confirm Order", command=lambda: (confirm_order(size_var.get(), quantity_entry.get()),book.destroy()))
     confirm_button.pack()
+    confirm_button.place(x=200,y=350,height=30,width=150)
 
 def confirm_order(size, quantity):
 
@@ -90,19 +109,21 @@ def confirm_order(size, quantity):
         messagebox.showerror("Invalid Input", "Please select a valid size and quantity.")
 
 def cancel_order():
-
     cancel = tk.Toplevel()
     cancel.title("Cancel an Order")
-    cancel.geometry("300x300")
+    cancel.geometry("500x500")
 
-    instruction_label = tk.Label(cancel, text="Please enter your order ID to cancel your order.")
+    instruction_label = tk.Label(cancel, text="Please enter your order ID to cancel your order.",font=('@Microsoft JhengHei UI',16))
     instruction_label.pack()
+    instruction_label.place(x=10,y=40)
 
     order_id_entry = tk.Entry(cancel)
     order_id_entry.pack()
+    order_id_entry.place(x=170,y=120,height=30,width=140)
 
-    confirm_button = tk.Button(cancel, text="Confirm Cancellation", command=lambda: (confirm_cancellation(order_id_entry.get()),cancel.destroy()))
+    confirm_button = tk.Button(cancel, text="Confirm Cancellation", font=('@Microsoft JhengHei UI',10),command=lambda: (confirm_cancellation(order_id_entry.get()),cancel.destroy()))
     confirm_button.pack()
+    confirm_button.place(x=160,y=170,height=30,width=150)
 
 def confirm_cancellation(order_id):
 
@@ -121,19 +142,23 @@ def confirm_cancellation(order_id):
         messagebox.showerror("Invalid Input", "Please enter a valid order ID.")
 
 def track_order():
-
+    
+   
     track = tk.Toplevel()
     track.title("Track an Order")
-    track.geometry("300x300")
+    track.geometry("500x500")
 
-    instruction_label = tk.Label(track, text="Please enter your order ID to track your order.")
+    instruction_label = tk.Label(track, text="Please enter your order ID to track your order.", font=('@Microsoft JhengHei UI',16))
     instruction_label.pack()
+    instruction_label.place(x=20,y=40)
 
     order_id_entry = tk.Entry(track)
     order_id_entry.pack()
+    order_id_entry.place(x=170,y=120,height=30,width=140)
 
-    show_button = tk.Button(track, text="Show Status", command=lambda: (show_status(order_id_entry.get()),track.destroy()))
+    show_button = tk.Button(track, text="Show Status", font=('@Microsoft JhengHei UI',10), command=lambda: (show_status(order_id_entry.get()),track.destroy()))
     show_button.pack()
+    show_button.place(x=160,y=170,height=30,width=150)
 
 def show_status(order_id):
 
@@ -150,13 +175,14 @@ def see_orders():
 
     see = tk.Toplevel()
     see.title("See Placed Orders")
-    see.geometry("300x300")
+    see.geometry("500x500")
 
-    orders_label = tk.Label(see, text="Here are the placed orders:")
+    orders_label = tk.Label(see, text="Here are the placed orders:",font=('@Microsoft JhengHei UI',20))
     orders_label.pack()
 
     orders_list = tk.Listbox(see)
     orders_list.pack()
+    orders_list.place(x=70,y=80,height=400,width=370)
 
     for order in orders:
         orders_list.insert(tk.END, f"Order ID: {order[0]}, Size: {order[1]}, Quantity: {order[2]}, Price: Rs. {order[3]}")
@@ -165,24 +191,29 @@ def accept_reject_order():
 
     accept_reject = tk.Toplevel()
     accept_reject.title("Accept or Reject an Order")
-    accept_reject.geometry("300x300")
+    accept_reject.geometry("500x500")
 
-    instruction_label = tk.Label(accept_reject, text="Please enter the order ID and select either Accept or Reject.")
+    instruction_label = tk.Label(accept_reject, text="Please enter the order ID and select either Accept or Reject.",font=('@Microsoft JhengHei UI',12))
     instruction_label.pack()
+    instruction_label.place(x=20,y=60)
 
     order_id_entry = tk.Entry(accept_reject)
     order_id_entry.pack()
+    order_id_entry.place(x=200,y=210)
 
     option_var = tk.StringVar()
 
-    accept_radio = tk.Radiobutton(accept_reject, text="Accept", variable=option_var, value="Accepted")
+    accept_radio = tk.Radiobutton(accept_reject, text="Accept", font=('@Microsoft JhengHei UI',16),variable=option_var, value="Accepted")
     accept_radio.pack()
+    accept_radio.place(x=200,y=120)
 
-    reject_radio = tk.Radiobutton(accept_reject, text="Reject", variable=option_var, value="Rejected")
+    reject_radio = tk.Radiobutton(accept_reject, text="Reject",font=('@Microsoft JhengHei UI',16), variable=option_var, value="Rejected")
     reject_radio.pack()
+    reject_radio.place(x=200,y=160)
 
-    confirm_button = tk.Button(accept_reject, text="Confirm", command=lambda: (confirm_option(order_id_entry.get(), option_var.get()),accept_reject()))
+    confirm_button = tk.Button(accept_reject, text="Confirm",font=('@Microsoft JhengHei UI',16), command=lambda: (confirm_option(order_id_entry.get(), option_var.get()),accept_reject()))
     confirm_button.pack()
+    confirm_button.place(x=200,y=240)
 
 def confirm_option(order_id, option):
 
@@ -204,30 +235,38 @@ def change_status():
 
     change = tk.Toplevel()
     change.title("Change Tracking Status")
-    change.geometry("300x300")
-
-    instruction_label = tk.Label(change, text="Please enter the order ID and select the new tracking status.")
+    change.geometry("500x500")
+    
+    instruction_label = tk.Label(change, text="Please enter the order ID and select the new tracking status.", font=('@Microsoft JhengHei UI',13))
     instruction_label.pack()
+    instruction_label.place(x=20,y=60)
 
     order_id_entry = tk.Entry(change)
     order_id_entry.pack()
-
+    order_id_entry.place(x=190,y=110)
+    
     status_var = tk.StringVar()
 
-    confirmed_radio = tk.Radiobutton(change, text="Order Confirmed", variable=status_var, value="Order Confirmed")
+    confirmed_radio = tk.Radiobutton(change, text="Order Confirmed",font=('@Microsoft JhengHei UI',13), variable=status_var, value="Order Confirmed")
     confirmed_radio.pack()
+    confirmed_radio.place(x=190,y=150)
 
-    preparation_radio = tk.Radiobutton(change, text="Under Preparation", variable=status_var, value="Under Preparation")
+    preparation_radio = tk.Radiobutton(change, text="Under Preparation",font=('@Microsoft JhengHei UI',13), variable=status_var, value="Under Preparation")
     preparation_radio.pack()
+    preparation_radio.place(x=190,y=190)
 
-    delivery_radio = tk.Radiobutton(change, text="Out for Delivery", variable=status_var, value="Out for Delivery")
+    delivery_radio = tk.Radiobutton(change, text="Out for Delivery",font=('@Microsoft JhengHei UI',13), variable=status_var, value="Out for Delivery")
     delivery_radio.pack()
+    delivery_radio.place(x=190,y=230)
 
-    delivered_radio = tk.Radiobutton(change, text="Delivered", variable=status_var, value="Delivered")
+    delivered_radio = tk.Radiobutton(change, text="Delivered",font=('@Microsoft JhengHei UI',13), variable=status_var, value="Delivered")
     delivered_radio.pack()
+    delivered_radio.place(x=190,y=270)
+    
 
-    confirm_button = tk.Button(change, text="Confirm Status", command=lambda: (confirm_status(order_id_entry.get(), status_var.get()),change.destroy()))
+    confirm_button = tk.Button(change, text="Confirm Status", font=('@Microsoft JhengHei UI',13),command=lambda: (confirm_status(order_id_entry.get(), status_var.get()),change.destroy()))
     confirm_button.pack()
+    confirm_button.place(x=190,y=310)
 
 def confirm_status(order_id, new_status):
 
@@ -245,20 +284,34 @@ def confirm_status(order_id, new_status):
 
         messagebox.showerror("Invalid Input", "Please enter a valid order ID and select a valid tracking status.")
 
+
 root = tk.Tk()
 root.title("Pizza Ordering System")
-root.geometry("300x300")
-root.config(bg="grey")
+root.geometry("500x500")
+#backgroung image
 
-welcome_label = tk.Label(root, text="*****Welcome to Pizza Hut!****",font=('@Microsoft JhengHei UI',14))
+image = Image.open("C:\\Users\\acer\\Documents\\Python_projects\\pizza.jpg")
+image = image.resize((500, 500), Image.ANTIALIAS)
+bg = ImageTk.PhotoImage(image)
+
+canvas = tk.Canvas(root, width=500, height=500)
+canvas.pack(fill="both", expand=True)
+canvas.create_image(0, 0, image=bg, anchor="nw")
+
+welcome_label = tk.Label(root, text="*****Welcome to Pizza Hut!****",font=('@Microsoft JhengHei UI',20))
 welcome_label.pack()
+welcome_label.place(x=50,y=50)
 
-customer_button = tk.Button(root, text="Customer Portal", command=customer_window)
+customer_button = tk.Button(root, text="Customer Portal",font=('@Microsoft JhengHei UI',16), command=customer_window)
 customer_button.pack()
-customer_button.place(x=10,y=80)
+customer_button.place(x=10,y=200,height=50,width=220)
 
-vendor_button = tk.Button(root, text="Vendor Portal", command=vendor_window)
+vendor_button = tk.Button(root, text="Vendor Portal",font=('@Microsoft JhengHei UI',16), command=vendor_window)
 vendor_button.pack()
-vendor_button.place(x=105,y=120)
+vendor_button.place(x=260,y=200,height=50,width=220)
+
+exit_button = Button(root, text="Exit", command=root.destroy)
+exit_button.pack(pady=20)
+exit_button.place(x=220,y=445,height=25,width=70)
 
 root.mainloop()
