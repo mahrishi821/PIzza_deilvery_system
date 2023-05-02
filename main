@@ -310,7 +310,7 @@ vendor_button = tk.Button(root, text="Vendor Portal",font=('@Microsoft JhengHei 
 vendor_button.pack()
 vendor_button.place(x=260,y=200,height=50,width=220)
 
-exit_button = Button(root, text="Exit", command=root.destroy)
+exit_button = tk.Button(root, text="Exit", command=root.destroy)
 exit_button.pack(pady=20)
 exit_button.place(x=220,y=445,height=25,width=70)
 
